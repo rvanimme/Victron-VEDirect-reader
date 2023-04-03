@@ -1,0 +1,4 @@
+#!/bin/bash
+g++ -Wall -Wextra -Werror -std=c++20 -O3 vicread.cpp -o vicread &
+g++ -Wall -Wextra -Werror -std=c++20 -O3 ttyusb2dev.cpp -o ttyusb2dev &
+wait

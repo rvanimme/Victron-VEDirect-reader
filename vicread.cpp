@@ -2,7 +2,7 @@
 /*
  * ----------------------------------------------------------------------------
  * Author: Ronald van Immerzeel
- * Version: V1.0, 2023-04-02
+ * Version: V1.1, 2023-04-16
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted.
@@ -146,7 +146,7 @@ static void print_error_info(std::string const &first_line) {
                     << "total blocks: " << t << ", "
                     << "valid blocks: " << valid_blocks << " (" << 100.0f * valid_blocks / t << "%), "
                     << "checksum errors: " << chksum_errors << " (" << 100.0f * chksum_errors / t << "%), "
-                    << "format errors: " << format_errors << " (" << 100.0f * format_errors / t << "%), "
+                    << "format errors: " << format_errors << " (" << 100.0f * format_errors / t << "%)"
                     << std::endl;
     }
     return;
@@ -159,6 +159,7 @@ int main(int argc, char *argv[])
 
     if (argc < 2) {
         std::cerr << "This application reads the VE.Direct protocol from a serial device and prints the data to stdout." << std::endl;
+        std::cerr << "All error and information messages are sent to stderr." << std::endl;
         std::cerr << "The VE.Direct protocol is used by Victron Energy devices to communicate with a host computer." << std::endl;
         std::cerr << std::endl;
         std::cerr << "Usage: " << argv[0] << " <serial_device> [<white_list_filter>]" << std::endl;

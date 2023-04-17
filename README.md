@@ -146,7 +146,7 @@ Physical        Device
 1-1.2           ttyUSB0
 ```
 
-### Converting physical USB names instead of USB device names
+### Converting physical USB names to USB device names
 ```
 rvanimme@raspi:~/Projects/GitHub/Victron-VEDirect-reader $ ./ttyusb2dev 1-1.1.4
 /dev/ttyUSB3

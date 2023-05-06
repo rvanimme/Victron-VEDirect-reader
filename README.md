@@ -73,14 +73,14 @@ VE.Direct BNF Grammar:
 <hex-digit> ::= <digit> | "A" | "B" | "C" | "D" | "E" | "F"
 ```
 ## Build
-From a terminal enter `./build`. This build take about 1 minute on a Raspberry Pi Zero W. On a Ubuntu PC, just a couple of seconds.
-After the build you will find 2 executables in the current folder: `vicread` and `ttyusb2dev`
+From a terminal enter `./build`. This build takes about 1 minute on a Raspberry Pi Zero W. On a Ubuntu PC, just a couple of seconds.
+After the build you will find 2 executables in the current folder: `vicread` and `ttyusb2dev`.
 
 ## vicread
-This program reads data from a Victron device using the VE.Direct protocol. It removes any HEX-messages from the received data before processing it. 
-Next it discards any blocks that fails the checksum or doesn't meet the expected format/grammar. Last, it filters based on a white list of field names provided on the command-line. The filtered VE.Direct lines are sent to **stdout**. All error and information messages are sent to **stderr**. 
+This program reads data from a Victron device using the VE.Direct protocol. It removes any hex-messages from the received data before processing it. 
+Next it discards any blocks that fail the checksum or doesn't meet the expected format/grammar. Last, it filters based on a white list of field names provided on the command-line. The filtered VE.Direct lines are sent to **stdout**. All error and information messages are sent to **stderr**. 
 
-The program uses Linux system calls to open the serial device in read-only mode and lock it for exclusive access. It also sets the serial port configuration according to the VE.Direct protocol. Regular experssions are used to check the format/grammer. The program runs in an infinite loop until terminated manually.
+The program uses Linux system calls to open the serial device in read-only mode and lock it for exclusive access. It also sets the serial port configuration according to the VE.Direct protocol. Regular expressions are used to check the format/grammar. The program runs in an infinite loop until terminated manually.
 
 ### Help
 ```
@@ -116,9 +116,9 @@ tail -f errlog-usb1-1.1.3.txt
 ```
 
 ## ttyusb2dev
-This program helps to find the full path of a serial USB device by either its name or physical address. If no argument is provided, it prints out a list of all available serial USB devices. The program uses the C++ standard library, Linux header files, and regular expressions. The full path device name is sent to **stdout***. All error and informational messages are send to **stderr**. 
+This program helps to find the full path of a serial USB device by either it's name or physical address. When no argument is provided, it prints out a list of all available serial USB devices. The program uses the C++ standard library, Linux header files, and regular expressions. The full path device name is sent to **stdout***. All error and informational messages are sent to **stderr**. 
 
-The device names like /dev/ttyUSB0 are not "stable". Every reboot can result in a different mapping on the physical USB device. Some USB hubs seems to be very stable but other USB hubs shuffle the devices names with every reboot. **The only stable USB device name is the physical name**
+The device names like /dev/ttyUSB0 are not "stable". Every reboot can result in a different mapping on the physical USB device. Some USB hubs seems to be very stable but other USB hubs shuffle the devices names with every reboot. **The only stable USB device name is the physical name**.
 
 ### Show all available serial USB devices including physical address
 ```
@@ -130,7 +130,7 @@ Usage: ./ttyusb2dev [ <device_name | physical_address> ]
 device_name is the name of the serial USB device (e.g. ttyUSB0 or ttyUSB5).
 physical_address is the topology based address of the serial USB device (e.g. 3-2.3 or 1-1.1.3)
 
-In case the device exists, the full path to the device is send to stdout
+In case the device exists, the full path to the device is sent to stdout
 In case the device does not exists or no argument is provided, a list of all tty USB devices is printed
 
 Available ttyUSB device

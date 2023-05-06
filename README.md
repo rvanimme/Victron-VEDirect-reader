@@ -7,7 +7,7 @@ I tried to read the VE.Direct protocol from my Victron devices with the use of c
 This implementation of the Victron VE.Direct reader takes care of the "standard features" like the configuration of the serial port, the removal of the hex protocol characters, and the checksum verification of the received blocks. The major extra feature is that this reader checks the format/grammar of each line. The other feature is the ability to filter on field names (white list).
 
 
-Format errors really happen, not that frequent but enough to mess up the data collection. This reader will significanly reduce undetected checksum errors
+Format errors really happen, not that frequent but enough to mess up the data collection. **This reader will significanly reduce undetected checksum errors**
 ```
 [2023-04-16T14:02:34-0700] ERROR checksum, block discarded. Received bytes: 209331851, total blocks: 1351348, valid blocks: 1322040 (97.83%), checksum errors: 29223 (2.16%), format errors: 85 (0.01%),      
 [2023-04-16T14:04:16-0700] ERROR checksum, block discarded. Received bytes: 209362624, total blocks: 1351552, valid blocks: 1322243 (97.83%), checksum errors: 29224 (2.16%), format errors: 85 (0.01%),      
@@ -16,8 +16,7 @@ Format errors really happen, not that frequent but enough to mess up the data co
 [2023-04-16T14:05:15-0700] ERROR checksum, block discarded. Received bytes: 209380311, total blocks: 1351669, valid blocks: 1322357 (97.83%), checksum errors: 29227 (2.16%), format errors: 85 (0.01%),      
 [2023-04-16T14:05:51-0700] ERROR checksum, block discarded. Received bytes: 209391210, total blocks: 1351741, valid blocks: 1322428 (97.83%), checksum errors: 29228 (2.16%), format errors: 85 (0.01%),      
 [2023-04-16T14:06:13-0700] ERROR checksum, block discarded. Received bytes: 209398015, total blocks: 1351786, valid blocks: 1322472 (97.83%), checksum errors: 29229 (2.16%), format errors: 85 (0.01%),      
-[2023-04-16T14:06:43-0700] ERROR format, line "BMV      712+5", block discarded. Received bytes: 209407066, total blocks: 1351846, valid blocks: 1322531 (97.83%), checksum errors: 29229 (2.16%), format erro
-rs: 86 (0.01%),                                    
+[2023-04-16T14:06:43-0700] ERROR format, line "BMV      712+5", block discarded. Received bytes: 209407066, total blocks: 1351846, valid blocks: 1322531 (97.83%), checksum errors: 29229 (2.16%), format errors: 86 (0.01%),                                    
 [2023-04-16T14:08:17-0700] ERROR checksum, block discarded. Received bytes: 209435250, total blocks: 1352033, valid blocks: 1322717 (97.83%), checksum errors: 29230 (2.16%), format errors: 86 (0.01%),      
 [2023-04-16T14:08:27-0700] ERROR checksum, block discarded. Received bytes: 209438251, total blocks: 1352053, valid blocks: 1322736 (97.83%), checksum errors: 29231 (2.16%), format errors: 86 (0.01%),      
 [2023-04-16T14:08:48-0700] ERROR checksum, block discarded. Received bytes: 209444722, total blocks: 1352096, valid blocks: 1322778 (97.83%), checksum errors: 29232 (2.16%), format errors: 86 (0.01%),      

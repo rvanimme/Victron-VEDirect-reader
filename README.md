@@ -4,10 +4,10 @@ Yet another reader for the Victron VE.Direct serial protocol for Linux-based sys
 ## Introduction
 I tried to read the VE.Direct protocol from my Victron devices with the use of cheap TTL serial to USB converters (e.g. the ones based on CH341). Most of the Victron devices work without any problems, but on some of these devices, I got quite a few errors. Most errors are detected by the VE.Direct checksum protocol, but once in a while, garbage appears on the output. The VE.Direct checksum protocol is very weak, e.g., it will not detect 2 MSB bit errors in a block. I'm pretty sure that the official Victron converters work much better, but they are about 6x more expensive. Maybe I can fix it with better (shielded) cables or reroute the cable (e.g. to avoid my noisy inverter), but I went for the "cheap" fix. I tried to fix this issue with an extra layer of validation, a format/grammar checker.
 
-This implementation of the Victron VE.Direct reader takes care of the "standard features" like the configuration of the serial port, the removal of the hex protocol characters, and the checksum verification of the received blocks. The major extra feature is that this reader checks the format/grammar of each line. The other feature is the ability to filter on field names (white list).
+This implementation of the Victron VE.Direct reader takes care of the "standard features" like the configuration of the serial port, the removal of the hex protocol characters, and the checksum verification of the received blocks. **The major extra feature is that this reader checks the format/grammar of each line. The other feature is the ability to filter on field names (white list)**.
 
 
-Format errors really happen, not that frequent but enough to mess up the data collection. **This reader will significanly reduce undetected checksum errors**
+Format errors really happen, not that frequent but enough to mess up the data collection. **This reader will significantly reduce undetected checksum errors**
 ```
 [2023-04-16T14:02:34-0700] ERROR checksum, block discarded. Received bytes: 209331851, total blocks: 1351348, valid blocks: 1322040 (97.83%), checksum errors: 29223 (2.16%), format errors: 85 (0.01%),      
 [2023-04-16T14:04:16-0700] ERROR checksum, block discarded. Received bytes: 209362624, total blocks: 1351552, valid blocks: 1322243 (97.83%), checksum errors: 29224 (2.16%), format errors: 85 (0.01%),      

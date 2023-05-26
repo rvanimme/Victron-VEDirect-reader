@@ -37,6 +37,7 @@
 #include <cassert>
 #include <cctype>
 #include <cstdio>
+#include <csignal> // Add this header for signal handling
 
 // Linux header files
 #include <fcntl.h>
@@ -82,7 +83,7 @@
 //                                  | " "
 //
 // <TAB> ::= "\t"
-// <CRLF> ::= "\r\n"  
+// <CRLF> ::= "\r\n"
 //
 // <number-value> ::= <signed-integer>
 // <signed-integer> ::= <digit>+
@@ -107,7 +108,7 @@
 // SER#: Matches the string "SER#".
 // [A-Z][A-Za-z0-9/ ]*: Matches a capitalized string value.
 // \r\n: Matches a carriage return.
-//                                    1  
+//                                    1
 static std::regex ve_direct_line_regex(
     "^(?:"
         "(?:[A-Z][A-Za-z0-9]*\\t(?:-?[0-9]+|0x[A-F0-9]+|ON|OFF|---))"   // [A-Z][A-Za-z0-9]*: Matches a capitalized name. (?:-?\d+|0x[A-F0-9]+|ON|OFF|---): Matches a number value, hex value, ON, OFF, or ---.
@@ -124,6 +125,14 @@ static unsigned long received_bytes = 0;   // This will take a while to overflow
 
 #include <chrono>
 #include <iomanip>
+
+// Function to handle the SIGPIPE signal
+void handleSIGPIPE(int signal) {
+    (void)signal;
+    // Print an error message if SIGPIPE is received
+    std::cerr << "Received SIGPIPE signal. Exiting..." << std::endl;
+    exit(EXIT_SUCCESS);
+}
 
 static void print_error_info(std::string const &first_line) {
 
@@ -154,6 +163,12 @@ static void print_error_info(std::string const &first_line) {
 
 int main(int argc, char *argv[])
 {
+
+     // Set up the signal handler for SIGPIPE
+    if (signal(SIGPIPE, handleSIGPIPE) == SIG_ERR) {
+        std::cerr << "Failed to set up signal handler for SIGPIPE" << std::endl;
+        return -1;
+    }
     // Set the precision of the floating point numbers
     std::cerr << std::fixed << std::setprecision(2);
 
@@ -175,7 +190,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    // The filter list can be provided in different ways. 
+    // The filter list can be provided in different ways.
     // You can use commas and or spaces to separate the names. Using quotes is optional
     std::string filter{','};        // Default to no white list filter
     {
@@ -195,11 +210,11 @@ int main(int argc, char *argv[])
     } else {
         std::cerr << "Using white list filter: \"" << filter.substr(1, filter.size() - 2) << "\"" << std::endl;
     }
-    
+
 
     // Print serial device name with double quotes.
     std::cerr << "Using serial device: \"" << argv[1] << "\"" << std::endl;
-    
+
     int fd;
     fd = open(argv[1], O_RDONLY | O_NOCTTY );   // Open the serial device in read only mode and don't make it the controlling terminal
     if (fd == -1) {
@@ -244,7 +259,7 @@ int main(int argc, char *argv[])
         readcharbuf.append(buf, n); // Append the Received bytes to the end of the existing std::string buffer
 
         // From: VE.Direct-Protocol-3.32.pdf
-        // " Some products will send Asynchronous HEX-messages, starting with “:A” and ending with a 
+        // " Some products will send Asynchronous HEX-messages, starting with “:A” and ending with a
         //   newline ‘\n’, on their own. These messages can interrupt a regular Text-mode frame. "
         {
             // Remove any HEX-messages from the readcharbuf.
@@ -260,11 +275,11 @@ int main(int argc, char *argv[])
 
             // Extract the checksum block from the readcharbuf and remove it from the readcharbuf
             auto block = readcharbuf.substr(0, startcheck + constexpr_strlen("Checksum\t") + 1); //  +1 for the actual checksum byte
-            readcharbuf.erase(0, startcheck + constexpr_strlen("Checksum\t") + 1); 
+            readcharbuf.erase(0, startcheck + constexpr_strlen("Checksum\t") + 1);
             received_bytes += block.length();
 
             // Calculate the modulo 256 sum of all the bytes in this block
-            // The used checksum is very weak, e.g. if 2 characters have a bit-7 flip, it cannot be detected. 
+            // The used checksum is very weak, e.g. if 2 characters have a bit-7 flip, it cannot be detected.
             unsigned char sum = 0;
             for (std::size_t i = 0; i < block.length(); i++)
                 sum += block[i];

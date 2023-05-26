@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# List of files
+file_list=(
+    "vicread"
+    "ttyusb2dev"
+)
+
+# Check and delete existing files
+for file in "${file_list[@]}"; do
+    if [[ -e "$HOME/bin/$file" ]]; then
+        echo "Deleting $file from $HOME/bin"
+        rm "$HOME/bin/$file"
+    fi
+
+    if [[ -e "$HOME/.local/bin/$file" ]]; then
+        echo "Deleting $file from $HOME/.local/bin"
+        rm "$HOME/.local/bin/$file"
+    fi
+done
+
+# Copy files to the appropriate directory
+for file in "${file_list[@]}"; do
+    if [[ -d "$HOME/.local/bin" ]]; then
+        if cp "$file" "$HOME/.local/bin"; then
+            echo "Copied $file to $HOME/.local/bin"
+        else
+            echo "Error: Unable to copy $file to $HOME/.local/bin"
+        fi
+    elif [[ -d "$HOME/bin" ]]; then
+        if cp "$file" "$HOME/bin"; then
+            echo "Copied $file to $HOME/bin"
+        else
+            echo "Error: Unable to copy $file to $HOME/bin"
+        fi
+    else
+        echo "Error: Neither $HOME/.local/bin nor $HOME/bin exists"
+    fi
+done
